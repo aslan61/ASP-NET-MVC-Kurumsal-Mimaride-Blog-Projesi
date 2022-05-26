@@ -1,0 +1,104 @@
+﻿@model IEnumerable<EntityLayer.Concrete.Blog>
+@{
+    ViewBag.Title = "BlogList";
+    Layout = "~/Views/Shared/_AuthorLayout.cshtml";
+}
+<h1>Blog Listesi</h1>
+@{ string color = "";}
+@{ string durum = "";}
+@{ int puan = 1;}
+
+<!DOCTYPE html>
+<html>
+<body class="hold-transition sidebar-mini">
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Blog Listem</h3>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped projects">
+                    <thead>
+                        <tr>
+                            <th style="width: 1%">
+                                ID
+                            </th>
+                            <th style="width: 20%">
+                                Blog Başlık
+                            </th>
+                            <th>
+                                Blog Değerlendirme Oranı
+                            </th>
+                            <th style="width: 20%" class="text-center">
+                                Durum
+                            </th>
+                            <th style="width: 20%">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            puan = item.BlogRating * 10;
+                            if (puan >= 85)
+                            {
+                                color = "post-category text-white bg-success mb-3";
+                                durum = "Çok İyi";
+                            }
+                            else if (puan >= 70 && puan <= 84)
+                            {
+                                color = "post-category text-white bg-info mb-3";
+                                durum = "Başarılı";
+                            }
+                            else if (puan >= 50 && puan <= 69)
+                            {
+                                color = "post-category text-warning bg-danger mb-3";
+                                durum = "Fena Değil";
+                            }
+                            else if (puan >= 0 && puan <= 49)
+                            {
+                                color = "post-category text-white bg-warning mb-3";
+                                durum = "Vasat";
+                            }
+                            <tr>
+                                <td>@item.BlogID</td>
+                                <td>@item.BlogTitle</td>
+                                <td class="project_progress">
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-green" role="progressbar" aria-volumenow="@puan" aria-volumemin="0" aria-volumemax="100" style="width: @puan%">
+                                        </div>
+                                    </div>
+                                    <small>
+                                        Aldığı Puan:@puan
+                                    </small>
+                                </td>
+                                <td class="project-state">
+                                    <span class="badge badge-@color">@durum</span>
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-sm" href="/User/UpdateBlog/@item.BlogID">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Düzenle
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger btn-sm" href="#">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Sil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <a href="/User/AddNewBlog/" class="btn btn-primary">Yeni Blog Yaz</a>
+</body>
+</html>
+
+
+
